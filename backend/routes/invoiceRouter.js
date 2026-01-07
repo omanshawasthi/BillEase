@@ -1,4 +1,3 @@
-// routes/invoiceRouter.js
 import express from "express";
 import {
   createInvoice,
@@ -15,7 +14,7 @@ const invoiceRouter = express.Router();
 // 🔐 Clerk automatically injects req.auth.userId
 invoiceRouter.use(clerkMiddleware());
 
-// All routes protected
+// All roues protected
 invoiceRouter.get("/", getInvoices);
 invoiceRouter.get("/:id", getInvoiceById);
 invoiceRouter.post("/", createInvoice);

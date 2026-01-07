@@ -1,7 +1,7 @@
- import cors from 'cors';
 import 'dotenv/config';
-import express from 'express';
 import { connectDB } from './config/db.js';
+import express from 'express';
+import cors from 'cors';
 import path from 'path';
 
 // ⭐ ADD CLERK MIDDLEWARE
@@ -13,19 +13,21 @@ import aiInvoiceRouter from './routes/aiInvoiceRouter.js';
 const app = express();
 const port = process.env.PORT || 4000;
 
-// ENABLE CREDENTIALS FOR CLERK COOKIE SESSION
+// ⭐ IMPORTANT: ENABLE CREDENTIALS FOR CLERK COOKIE SESSION
 app.use(cors({
     origin: "http://localhost:5173",     // change to frontend URL in production
     credentials: true
 }));
 
-//Clerk middleware globally (does NOT protect routes)
+// ⭐ Use Clerk middleware globally (does NOT protect routes)
 app.use(clerkMiddleware());
 app.use(express.json({ limit: "20mb" }));
 app.use(express.urlencoded({ limit: "20mb", extended: true }));
 
 // Database Connection
 connectDB();
+console.log("Check Gemini Key:", process.env.GEMINI_API_KEY ? "✅ LOADED" : "❌ MISSING");
+
 
 // Static uploads folder
 app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
